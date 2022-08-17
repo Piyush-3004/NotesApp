@@ -1,5 +1,7 @@
 package com.example.notesApp.Service;
 
+import java.util.List;
+
 import com.example.notesApp.Dto.NotesAppDto;
 import com.example.notesApp.Model.NotesAppModel;
 
@@ -10,6 +12,6 @@ public interface INotesAppService {
 
 	NotesAppModel update(String token, NotesAppDto notesAppDto);
 
-	NotesAppModel read(String token);
+	List<NotesAppModel> read(String token);
 
 }

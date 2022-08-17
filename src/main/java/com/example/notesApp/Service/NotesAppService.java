@@ -1,5 +1,6 @@
 package com.example.notesApp.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,27 +37,31 @@ public class NotesAppService implements INotesAppService{
 		notesAppRepository.save(note);
 		return note;
 	}
-
-	
 	
 	@Override
 	public NotesAppModel update(String token, NotesAppDto notesAppDto) {
-		long id = tokenUtil.decodeToken(token);
-		Optional<NotesAppModel> note = notesAppRepository.findByUser(id);
-		note.get().setLabel(notesAppDto.getLabel());
-		note.get().setNote(notesAppDto.getNote());
-		notesAppRepository.save(note.get());
-		return note.get();
+		long userId = tokenUtil.decodeToken(token);
+		Optional<UserModel> isUserPresent = userRepo.findById(userId);
+		if(isUserPresent.isPresent()) {
+			Optional<NotesAppModel> isNotePresent = notesAppRepository.findById(isUserPresent.get().getUser_Id());
+			isNotePresent.get().setLabel(notesAppDto.getLabel());
+			isNotePresent.get().setNote(notesAppDto.getNote());
+			notesAppRepository.save(isNotePresent.get());
+			return isNotePresent.get();
+		}
+		return null;
 	}
 
 
 
 	@Override
-	public NotesAppModel read(String token) {
-		long id = tokenUtil.decodeToken(token);
-		Optional<NotesAppModel> note = notesAppRepository.findByUser(id);
+	public List<NotesAppModel> read(String token) {
+		long userId = tokenUtil.decodeToken(token);
+		Optional<UserModel> isUserPresent = userRepo.findById(userId);
 		
-		return note.get();
+		List<NotesAppModel> note = notesAppRepository.findAll();
+		
+		return note;
 	}
 	
 	

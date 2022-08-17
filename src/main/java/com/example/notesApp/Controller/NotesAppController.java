@@ -1,5 +1,7 @@
 package com.example.notesApp.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +26,7 @@ public class NotesAppController {
 	}
 	
 	@GetMapping("/read")
-	public NotesAppModel read(@RequestHeader String token) {
+	public List<NotesAppModel> read(@RequestHeader String token) {
 		return notesAppService.read(token);
 	}
 	
